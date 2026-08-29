@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PT Cipta Tekstil Nusantara — Manufaktur Tekstil Cikarang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo-950:#141b30;
+    --indigo-900:#1b2440;
+    --indigo-800:#28345a;
+    --indigo-700:#37457a;
+    --ivory:#f6f1e6;
+    --ivory-dim:#ece4d2;
+    --gold:#c69a3a;
+    --gold-soft:#e3c374;
+    --charcoal:#232019;
+    --thread-white:#fffdf8;
+    --line: rgba(198,154,58,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Manrope',sans-serif;
+    background:var(--ivory);
+    color:var(--charcoal);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:450;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  ::selection{background:var(--gold-soft);color:var(--indigo-950);}
+
+  /* ---------- WOVEN PATTERN (signature element) ---------- */
+  .weave-bg{
+    position:absolute;inset:0;
+    pointer-events:none;
+    opacity:0.16;
+  }
+  .weave-bg svg{width:100%;height:100%;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(20,27,48,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 32px;max-width:1180px;margin:0 auto;
+  }
+  .brand{
+    display:flex;align-items:center;gap:12px;
+    color:var(--thread-white);
+  }
+  .brand-mark{
+    width:34px;height:34px;flex-shrink:0;
+  }
+  .brand-name{
+    font-family:'Fraunces',serif;
+    font-size:1.05rem;
+    letter-spacing:0.02em;
+    line-height:1.1;
+  }
+  .brand-sub{
+    font-size:0.62rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    opacity:0.85;
+  }
+  .navlinks{display:flex;gap:36px;}
+  .navlinks a{
+    color:var(--ivory-dim);
+    font-size:0.85rem;
+    letter-spacing:0.03em;
+    transition:color .25s;
+    position:relative;
+  }
+  .navlinks a:hover{color:var(--gold-soft);}
+  .navlinks a::after{
+    content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;
+    background:var(--gold);transition:width .3s;
+  }
+  .navlinks a:hover::after{width:100%;}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:radial-gradient(ellipse at 30% 0%, var(--indigo-800), var(--indigo-950) 65%);
+    color:var(--thread-white);
+    display:flex;align-items:center;
+    padding-top:90px;
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    max-width:1180px;margin:0 auto;padding:60px 32px 100px;
+    width:100%;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--gold-soft);margin-bottom:28px;
+  }
+  .eyebrow::before{
+    content:'';width:28px;height:1px;background:var(--gold);
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,5.4vw,4.4rem);
+    font-weight:450;
+    line-height:1.05;
+    max-width:820px;
+    margin-bottom:26px;
+  }
+  .hero h1 em{
+    font-style:italic;color:var(--gold-soft);
+  }
+  .hero p.lead{
+    font-size:1.08rem;
+    color:var(--ivory-dim);
+    max-width:520px;
+    line-height:1.7;
+    margin-bottom:40px;
+  }
+  .hero-cta{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:15px 30px;
+    border-radius:2px;
+    font-size:0.85rem;letter-spacing:0.04em;
+    font-weight:600;
+    transition:all .3s;
+    cursor:pointer;border:1px solid transparent;
+  }
+  .btn-gold{
+    background:var(--gold);color:var(--indigo-950);
+  }
+  .btn-gold:hover{background:var(--gold-soft);transform:translateY(-2px);}
+  .btn-ghost{
+    border-color:rgba(246,241,230,0.35);color:var(--thread-white);
+  }
+  .btn-ghost:hover{border-color:var(--gold-soft);color:var(--gold-soft);}
+
+  .hero-stats{
+    position:relative;z-index:2;
+    border-top:1px solid var(--line);
+    display:grid;grid-template-columns:repeat(4,1fr);
+  }
+  .hstat{
+    padding:26px 32px;border-right:1px solid var(--line);
+  }
+  .hstat:last-child{border-right:none;}
+  .hstat .num{
+    font-family:'Fraunces',serif;font-size:1.9rem;color:var(--gold-soft);
+  }
+  .hstat .lbl{
+    font-size:0.72rem;color:var(--ivory-dim);letter-spacing:0.05em;margin-top:4px;
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:110px 0;position:relative;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .tag{
+    font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:16px;display:block;
+  }
+  .section-head h2{
+    font-size:clamp(1.8rem,3.4vw,2.6rem);
+    line-height:1.2;color:var(--indigo-950);
+  }
+  .section-head p{
+    margin-top:18px;color:#5c5748;line-height:1.75;font-size:1rem;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--ivory);}
+  .about-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;
+  }
+  .about-visual{
+    position:relative;aspect-ratio:4/5;background:var(--indigo-950);
+    overflow:hidden;
+  }
+  .about-visual .weave-bg{opacity:0.5;}
+  .about-visual .frame-label{
+    position:absolute;bottom:28px;left:28px;color:var(--thread-white);
+    font-family:'Fraunces',serif;font-size:1.1rem;z-index:2;
+  }
+  .about-visual .frame-label span{
+    display:block;font-family:'Manrope',sans-serif;font-size:0.68rem;
+    letter-spacing:0.15em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:8px;
+  }
+  .about-copy p{
+    color:#4d4939;line-height:1.85;margin-bottom:20px;font-size:0.98rem;
+  }
+  .about-facts{
+    display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;
+  }
+  .fact{border-left:2px solid var(--gold);padding-left:16px;}
+  .fact .num{font-family:'Fraunces',serif;font-size:1.5rem;color:var(--indigo-900);}
+  .fact .lbl{font-size:0.78rem;color:#726c5a;margin-top:2px;}
+
+  /* ---------- PRODUCTS ---------- */
+  .products{background:var(--indigo-950);color:var(--thread-white);}
+  .products .section-head h2{color:var(--thread-white);}
+  .products .section-head p{color:var(--ivory-dim);}
+  .products .tag{color:var(--gold-soft);}
+  .prod-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);
+  }
+  .prod-card{
+    background:var(--indigo-950);padding:38px 28px;
+    transition:background .35s;
+  }
+  .prod-card:hover{background:var(--indigo-900);}
+  .prod-icon{width:38px;height:38px;margin-bottom:22px;color:var(--gold-soft);}
+  .prod-card h3{font-size:1.08rem;color:var(--thread-white);margin-bottom:12px;font-weight:450;}
+  .prod-card p{font-size:0.87rem;color:var(--ivory-dim);line-height:1.65;}
+
+  /* ---------- PROCESS ---------- */
+  .process{background:var(--ivory-dim);}
+  .process-list{
+    display:flex;flex-direction:column;
+  }
+  .proc-row{
+    display:grid;grid-template-columns:90px 1fr;gap:28px;
+    padding:30px 0;border-top:1px solid rgba(35,32,25,0.12);
+    align-items:baseline;
+  }
+  .proc-row:last-child{border-bottom:1px solid rgba(35,32,25,0.12);}
+  .proc-num{font-family:'Fraunces',serif;font-style:italic;font-size:1.5rem;color:var(--gold);}
+  .proc-title{font-size:1.1rem;font-weight:600;color:var(--indigo-950);margin-bottom:6px;}
+  .proc-desc{color:#5c5748;font-size:0.92rem;line-height:1.65;max-width:640px;}
+
+  /* ---------- ADVANTAGES ---------- */
+  .advantages{background:var(--ivory);}
+  .adv-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    background:rgba(35,32,25,0.1);
+  }
+  .adv-card{background:var(--ivory);padding:40px 32px;}
+  .adv-card .n{
+    font-family:'Fraunces',serif;font-style:italic;color:var(--gold);
+    font-size:1rem;margin-bottom:18px;display:block;
+  }
+  .adv-card h3{font-size:1.15rem;margin-bottom:12px;color:var(--indigo-950);font-weight:450;}
+  .adv-card p{font-size:0.9rem;color:#5c5748;line-height:1.65;}
+
+  /* ---------- CTA BAND ---------- */
+  .ctaband{
+    background:linear-gradient(120deg,var(--indigo-900),var(--indigo-950));
+    color:var(--thread-white);
+    padding:80px 0;position:relative;overflow:hidden;
+  }
+  .ctaband .weave-bg{opacity:0.12;}
+  .ctaband-inner{
+    position:relative;z-index:2;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:28px;
+  }
+  .ctaband h2{font-size:clamp(1.5rem,3vw,2.1rem);max-width:520px;}
+  .ctaband h2 em{color:var(--gold-soft);font-style:italic;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--ivory-dim);}
+  .contact-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:70px;
+  }
+  .contact-info h3{
+    font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:10px;
+  }
+  .contact-info .big{
+    font-family:'Fraunces',serif;font-size:1.3rem;color:var(--indigo-950);
+    margin-bottom:34px;line-height:1.5;
+  }
+  .cinfo-row{
+    display:flex;gap:16px;padding:18px 0;border-top:1px solid rgba(35,32,25,0.12);
+  }
+  .cinfo-row:last-child{border-bottom:1px solid rgba(35,32,25,0.12);}
+  .cinfo-row .ic{width:20px;height:20px;flex-shrink:0;color:var(--gold);margin-top:2px;}
+  .cinfo-row .lbl{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:#8a836c;}
+  .cinfo-row .val{font-size:0.95rem;color:var(--charcoal);margin-top:3px;}
+
+  form{display:flex;flex-direction:column;gap:18px;}
+  .field label{
+    display:block;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
+    color:#8a836c;margin-bottom:8px;
+  }
+  .field input, .field textarea{
+    width:100%;background:transparent;border:none;border-bottom:1px solid rgba(35,32,25,0.25);
+    padding:10px 2px;font-family:'Manrope',sans-serif;font-size:0.95rem;color:var(--charcoal);
+    outline:none;transition:border-color .25s;resize:none;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--gold);}
+  form .btn{align-self:flex-start;margin-top:8px;border:none;}
+
+  footer{
+    background:var(--indigo-950);color:var(--ivory-dim);
+    padding:56px 0 28px;
+  }
+  .foot-grid{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;
+    padding-bottom:34px;border-bottom:1px solid var(--line);margin-bottom:24px;
+  }
+  .foot-brand{color:var(--thread-white);font-family:'Fraunces',serif;font-size:1.15rem;}
+  .foot-links{display:flex;gap:30px;font-size:0.85rem;}
+  .foot-links a:hover{color:var(--gold-soft);}
+  .foot-bottom{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:0.78rem;color:#8a8878;
+  }
+  .foot-bottom a{color:var(--gold-soft);}
+
+  @media(max-width:900px){
+    .navlinks{display:none;}
+    .about-grid, .contact-grid{grid-template-columns:1fr;gap:40px;}
+    .prod-grid{grid-template-columns:repeat(2,1fr);}
+    .adv-grid{grid-template-columns:1fr;}
+    .hero-stats{grid-template-columns:repeat(2,1fr);}
+    .hstat:nth-child(2){border-right:none;}
+  }
+  @media(max-width:520px){
+    .wrap,.hero-inner{padding-left:20px;padding-right:20px;}
+    .prod-grid{grid-template-columns:1fr;}
+    section{padding:74px 0;}
+    .proc-row{grid-template-columns:50px 1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <nav>
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+        <rect x="1" y="1" width="38" height="38" stroke="#c69a3a" stroke-width="1"/>
+        <path d="M8 8 L32 32 M8 32 L32 8" stroke="#e3c374" stroke-width="0.7"/>
+        <path d="M8 20 H32 M20 8 V32" stroke="#c69a3a" stroke-width="1"/>
+      </svg>
+      <div>
+        <div class="brand-name">Cipta Tekstil Nusantara</div>
+        <div class="brand-sub">Tekstil &amp; Garmen · Cikarang</div>
+      </div>
+    </div>
+    <div class="navlinks">
+      <a href="#tentang">Tentang</a>
+      <a href="#produk">Produk</a>
+      <a href="#proses">Proses</a>
+      <a href="#keunggulan">Keunggulan</a>
+      <a href="#kontak">Kontak</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="weave-bg">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="weave" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M0 20 H40" stroke="#c69a3a" stroke-width="0.6"/>
+          <path d="M20 0 V40" stroke="#c69a3a" stroke-width="0.6"/>
+          <path d="M0 0 H10 V10 H0 Z" fill="#c69a3a" opacity="0.15"/>
+          <path d="M20 20 H30 V30 H20 Z" fill="#c69a3a" opacity="0.15"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="800" fill="url(#weave)"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <span class="eyebrow">Manufaktur Tekstil Sejak Berdiri di Cikarang</span>
+    <h1>Merajut serat menjadi <em>kain berkualitas</em>, dari Cikarang untuk pasar dunia.</h1>
+    <p class="lead">Kami memproduksi kain tenun dan rajut dengan standar mutu ketat — dari pemintalan benang hingga finishing — melayani kebutuhan garmen lokal maupun ekspor.</p>
+    <div class="hero-cta">
+      <a href="#produk" class="btn btn-gold">Lihat Lini Produk</a>
+      <a href="#kontak" class="btn btn-ghost">Hubungi Kami</a>
+    </div>
+  </div>
+  <div class="hero-stats wrap" style="max-width:1180px;padding-left:32px;padding-right:32px;">
+    <div class="hstat"><div class="num">15+</div><div class="lbl">Tahun Pengalaman</div></div>
+    <div class="hstat"><div class="num">600+</div><div class="lbl">Karyawan Produksi</div></div>
+    <div class="hstat"><div class="num">12</div><div class="lbl">Negara Tujuan Ekspor</div></div>
+    <div class="hstat"><div class="num">98%</div><div class="lbl">Tingkat Ketepatan Kirim</div></div>
+  </div>
+</section>
+
+<!-- ============ TENTANG ============ -->
+<section class="about" id="tentang">
+  <div class="wrap about-grid">
+    <div class="about-visual">
+      <div class="weave-bg">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="weave2" width="26" height="26" patternUnits="userSpaceOnUse">
+              <path d="M0 13 H26" stroke="#e3c374" stroke-width="0.7"/>
+              <path d="M13 0 V26" stroke="#e3c374" stroke-width="0.7"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="500" fill="url(#weave2)"/>
+        </svg>
+      </div>
+      <div class="frame-label">
+        <span>Fasilitas Produksi</span>
+        Kawasan Industri, Cikarang
+      </div>
+    </div>
+    <div class="about-copy">
+      <span class="tag">Profil Perusahaan</span>
+      <h2 style="color:var(--indigo-950);margin-bottom:22px;font-size:clamp(1.8rem,3vw,2.4rem);">Pabrik tekstil terintegrasi di jantung industri Cikarang</h2>
+      <p>PT Cipta Tekstil Nusantara adalah perusahaan manufaktur tekstil yang berlokasi di Kawasan Industri Cikarang, Bekasi, Jawa Barat. Kami menjalankan proses produksi terintegrasi mulai dari penenunan, perajutan, pencelupan, hingga finishing kain siap jahit.</p>
+      <p>Dengan mesin produksi modern dan tim quality control berpengalaman, kami berkomitmen menghasilkan kain dengan konsistensi warna, kekuatan serat, dan ketepatan spesifikasi yang menjadi kepercayaan mitra garmen dan brand fashion, baik untuk pasar domestik maupun ekspor.</p>
+      <div class="about-facts">
+        <div class="fact"><div class="num">3</div><div class="lbl">Lini produksi aktif</div></div>
+        <div class="fact"><div class="num">ISO</div><div class="lbl">Standar mutu produksi</div></div>
+        <div class="fact"><div class="num">24/7</div><div class="lbl">Operasional pabrik</div></div>
+        <div class="fact"><div class="num">B2B</div><div class="lbl">Fokus kemitraan industri</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUK ============ -->
+<section class="products" id="produk">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Lini Produk</span>
+      <h2>Empat kategori utama produksi kami</h2>
+      <p>Setiap kategori dikerjakan dengan mesin dan formula proses yang disesuaikan agar hasil kain sesuai kebutuhan spesifik pelanggan.</p>
+    </div>
+  </div>
+  <div class="prod-grid">
+    <div class="prod-card">
+      <svg class="prod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 6h18M3 12h18M3 18h18M6 3v18M18 3v18"/></svg>
+      <h3>Kain Tenun</h3>
+      <p>Kain woven untuk kemeja, seragam, dan bahan dasar garmen dengan tekstur rapat dan tahan lama.</p>
+    </div>
+    <div class="prod-card">
+      <svg class="prod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M3 12c3-3 15-3 18 0"/></svg>
+      <h3>Kain Rajut</h3>
+      <p>Knit fabric elastis untuk kaos, pakaian olahraga, dan produk fashion casual.</p>
+    </div>
+    <div class="prod-card">
+      <svg class="prod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg>
+      <h3>Pencelupan &amp; Printing</h3>
+      <p>Layanan dyeing dan printing motif dengan kontrol warna presisi sesuai Pantone pelanggan.</p>
+    </div>
+    <div class="prod-card">
+      <svg class="prod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="9"/></svg>
+      <h3>Finishing &amp; CMT</h3>
+      <p>Proses akhir kain serta layanan cut-make-trim untuk kebutuhan produksi garmen jadi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROSES ============ -->
+<section class="process" id="proses">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Alur Produksi</span>
+      <h2>Dari benang hingga kain jadi</h2>
+      <p>Lima tahap produksi yang kami jalankan secara berurutan untuk menjaga konsistensi mutu setiap batch.</p>
+    </div>
+    <div class="process-list">
+      <div class="proc-row">
+        <div class="proc-num">01</div>
+        <div><div class="proc-title">Pemintalan &amp; Persiapan Benang</div><div class="proc-desc">Serat diseleksi dan dipintal menjadi benang dengan ketebalan dan kekuatan sesuai spesifikasi kain target.</div></div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-num">02</div>
+        <div><div class="proc-title">Penenunan / Perajutan</div><div class="proc-desc">Benang diproses di mesin tenun atau rajut untuk membentuk struktur kain mentah (greige).</div></div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-num">03</div>
+        <div><div class="proc-title">Pencelupan &amp; Pewarnaan</div><div class="proc-desc">Kain melalui proses dyeing dengan pencocokan warna presisi sesuai standar Pantone pelanggan.</div></div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-num">04</div>
+        <div><div class="proc-title">Finishing</div><div class="proc-desc">Kain diberi perlakuan akhir — penghalusan, anti-kusut, atau anti-air — sesuai permintaan.</div></div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-num">05</div>
+        <div><div class="proc-title">Quality Control &amp; Pengemasan</div><div class="proc-desc">Setiap gulungan kain diperiksa tim QC sebelum dikemas dan dikirim ke pelanggan.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KEUNGGULAN ============ -->
+<section class="advantages" id="keunggulan">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Mengapa Memilih Kami</span>
+      <h2>Keunggulan yang kami jaga di setiap produksi</h2>
+    </div>
+  </div>
+  <div class="adv-grid">
+    <div class="adv-card">
+      <span class="n">Mutu</span>
+      <h3>Kontrol Kualitas Ketat</h3>
+      <p>Setiap tahap produksi diawasi tim QC untuk memastikan konsistensi warna, kekuatan, dan tekstur kain.</p>
+    </div>
+    <div class="adv-card">
+      <span class="n">Kapasitas</span>
+      <h3>Produksi Skala Besar</h3>
+      <p>Fasilitas dengan mesin modern mampu memenuhi pesanan volume besar dengan waktu produksi yang terjadwal.</p>
+    </div>
+    <div class="adv-card">
+      <span class="n">Lokasi</span>
+      <h3>Strategis di Cikarang</h3>
+      <p>Berada di kawasan industri Cikarang, dekat akses tol dan pelabuhan untuk distribusi domestik maupun ekspor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="ctaband">
+  <div class="weave-bg">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="weave3" width="30" height="30" patternUnits="userSpaceOnUse">
+          <path d="M0 15 H30" stroke="#e3c374" stroke-width="0.6"/>
+          <path d="M15 0 V30" stroke="#e3c374" stroke-width="0.6"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="300" fill="url(#weave3)"/>
+    </svg>
+  </div>
+  <div class="wrap ctaband-inner">
+    <h2>Siap memulai kemitraan produksi tekstil dengan <em>kualitas terjamin?</em></h2>
+    <a href="#kontak" class="btn btn-gold">Diskusikan Proyek Anda</a>
+  </div>
+</section>
+
+<!-- ============ KONTAK ============ -->
+<section class="contact" id="kontak">
+  <div class="wrap contact-grid">
+    <div class="contact-info">
+      <h3>Kontak</h3>
+      <div class="big">Mari bicarakan kebutuhan tekstil produksi Anda bersama tim kami di Cikarang.</div>
+      <div class="cinfo-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div><div class="lbl">Alamat Pabrik</div><div class="val">Kawasan Industri MM2100, Cikarang, Bekasi, Jawa Barat</div></div>
+      </div>
+      <div class="cinfo-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 4h16v16H4z"/><path d="M4 6l8 6 8-6"/></svg>
+        <div><div class="lbl">Email</div><div class="val">info@ciptatekstil.co.id</div></div>
+      </div>
+      <div class="cinfo-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>
+        <div><div class="lbl">Telepon</div><div class="val">(021) 8990-XXXX</div></div>
+      </div>
+    </div>
+    <form onsubmit="event.preventDefault(); alert('Terima kasih, pesan Anda telah kami terima. Tim kami akan segera menghubungi Anda.');">
+      <div class="field"><label>Nama</label><input type="text" required></div>
+      <div class="field"><label>Perusahaan</label><input type="text"></div>
+      <div class="field"><label>Email</label><input type="email" required></div>
+      <div class="field"><label>Kebutuhan Produksi</label><textarea rows="4"></textarea></div>
+      <button class="btn btn-gold" type="submit">Kirim Pesan</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">Cipta Tekstil Nusantara</div>
+      <div class="foot-links">
+        <a href="#tentang">Tentang</a>
+        <a href="#produk">Produk</a>
+        <a href="#proses">Proses</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 PT Cipta Tekstil Nusantara. Nama perusahaan bersifat sementara.</span>
+      <span>Website dibuat oleh <a href="#">Muhammad Aris Adi Setyawan</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
