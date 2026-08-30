@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Please Wait</title>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0f0f0f;
+      color: white;
+      overflow: hidden;
+    }
+
+
+    /* =========================
+       STREAMING BACKGROUND
+    ========================= */
+
+    .video-background {
+      position: fixed;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.35),
+          rgba(0,0,0,0.85)
+        ),
+        url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1920&q=80");
+
+      background-size: cover;
+      background-position: center;
+
+      transform: scale(1.05);
+
+      filter: blur(3px);
+
+      z-index: -3;
+
+      animation: cinematicMove 15s ease-in-out infinite alternate;
+    }
+
+
+    @keyframes cinematicMove {
+
+      from {
+        transform: scale(1.05);
+      }
+
+      to {
+        transform: scale(1.15);
+      }
+
+    }
+
+
+    /* DARK CINEMATIC OVERLAY */
+
+    .dark-overlay {
+      position: fixed;
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(0,0,0,0.15),
+          rgba(0,0,0,0.92)
+        );
+
+      z-index: -2;
+    }
+
+
+    /* FAKE VIDEO PLAYER */
+
+    .player-ui {
+      position: fixed;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      width: 85%;
+      max-width: 1100px;
+
+      height: 65vh;
+
+      border-radius: 12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      background:
+        rgba(0,0,0,0.35);
+
+      box-shadow:
+        0 30px 100px
+        rgba(0,0,0,0.9);
+
+      z-index: -1;
+    }
+
+
+    /* PLAYER TOP BAR */
+
+    .player-top {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 50px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0 20px;
+
+      background:
+        linear-gradient(
+          rgba(0,0,0,0.7),
+          transparent
+        );
+    }
+
+
+    .fake-logo {
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      letter-spacing: 2px;
+
+      color:
+        rgba(255,255,255,0.5);
+
+    }
+
+
+    /* PLAY BUTTON */
+
+    .fake-play {
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      width: 80px;
+      height: 80px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.08);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.15);
+
+      font-size: 28px;
+
+      color:
+        rgba(255,255,255,0.7);
+
+    }
+
+
+    /* VIDEO CONTROLS */
+
+    .controls {
+
+      position: absolute;
+
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      padding: 25px;
+
+      background:
+        linear-gradient(
+          transparent,
+          rgba(0,0,0,0.8)
+        );
+
+    }
+
+
+    .progress {
+
+      height: 4px;
+
+      width: 100%;
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.15);
+
+    }
+
+
+    .progress-active {
+
+      width: 35%;
+
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        rgba(255,255,255,0.7);
+
+    }
+
+
+    /* =========================
+       WELCOME POPUP
+    ========================= */
+
+    .overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0,0,0,0.35);
+
+      backdrop-filter:
+        blur(2px);
+
+    }
+
+
+    .popup {
+
+      position: relative;
+
+      width: 100%;
+
+      max-width: 420px;
+
+      padding:
+        42px 30px;
+
+      text-align: center;
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(20,20,20,0.92);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+      box-shadow:
+        0 30px 100px
+        rgba(0,0,0,0.8);
+
+      animation:
+        popupShow
+        0.6s
+        cubic-bezier(.2,.8,.2,1);
+
+    }
+
+
+    @keyframes popupShow {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(30px)
+          scale(.92);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1);
+
+      }
+
+    }
+
+
+    /* ICON */
+
+    .icon {
+
+      width: 55px;
+
+      height: 55px;
+
+      margin:
+        0 auto
+        22px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(255,255,255,0.08);
+
+      font-size:
+        22px;
+
+    }
+
+
+    h1 {
+
+      font-size:
+        28px;
+
+      margin-bottom:
+        12px;
+
+    }
+
+
+    p {
+
+      color:
+        rgba(255,255,255,0.5);
+
+      font-size:
+        14px;
+
+      line-height:
+        1.6;
+
+      margin-bottom:
+        28px;
+
+    }
+
+
+    /* BUTTON */
+
+    .continue-btn {
+
+      width:
+        100%;
+
+      padding:
+        16px;
+
+      border:
+        none;
+
+      border-radius:
+        8px;
+
+      background:
+        #ffffff;
+
+      color:
+        #000000;
+
+      font-weight:
+        bold;
+
+      font-size:
+        13px;
+
+      letter-spacing:
+        1px;
+
+      cursor:
+        pointer;
+
+      transition:
+        .25s;
+
+    }
+
+
+    .continue-btn:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 10px 30px
+        rgba(255,255,255,0.2);
+
+    }
+
+
+    /* LOADING */
+
+    .loading {
+
+      display:
+        none;
+
+      margin-top:
+        20px;
+
+      font-size:
+        11px;
+
+      color:
+        rgba(255,255,255,0.5);
+
+      letter-spacing:
+        2px;
+
+    }
+
+
+    .spinner {
+
+      width:
+        20px;
+
+      height:
+        20px;
+
+      margin:
+        0 auto
+        10px;
+
+      border-radius:
+        50%;
+
+      border:
+        2px solid
+        rgba(255,255,255,0.15);
+
+      border-top-color:
+        white;
+
+      animation:
+        spin
+        .7s
+        linear
+        infinite;
+
+    }
+
+
+    @keyframes spin {
+
+      to {
+
+        transform:
+          rotate(360deg);
+
+      }
+
+    }
+
+
+    /* MOBILE */
+
+    @media(max-width:600px) {
+
+      .player-ui {
+
+        width:
+          100%;
+
+        height:
+          100vh;
+
+        border-radius:
+          0;
+
+      }
+
+      .popup {
+
+        max-width:
+          95%;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- BACKGROUND -->
+
+  <div class="video-background"></div>
+
+  <div class="dark-overlay"></div>
+
+  <!-- FAKE STREAMING PLAYER -->
+
+  <div class="player-ui">
+
+```
+<div class="player-top">
+
+  <div class="fake-logo">
+    STREAMING PLAYER
+  </div>
+
+</div>
+
+
+<div class="fake-play">
+  ▶
+</div>
+
+
+<div class="controls">
+
+  <div class="progress">
+
+    <div
+      class="progress-active">
+    </div>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- WELCOME POPUP -->
+
+  <div class="overlay">
+
+```
+<div class="popup">
+
+
+  <div class="icon">
+    ▶
+  </div>
+
+
+  <h1>Welcome</h1>
+
+
+  <p>
+    Klik tombol di bawah untuk
+    melanjutkan.
+  </p>
+
+
+  <button
+    class="continue-btn"
+    onclick="continuePage()">
+
+    KLIK UNTUK MELANJUTKAN
+
+  </button>
+
+
+  <div
+    class="loading"
+    id="loading">
+
+    <div class="spinner"></div>
+
+    MEMUAT...
+
+  </div>
+
+
+</div>
+```
+
+  </div>
+
+  <script>
+
+    function continuePage() {
+
+      document
+        .getElementById("loading")
+        .style
+        .display = "block";
+
+
+      // GANTI LINK KAMU DI SINI
+
+      const link =
+        "https://oatstuckalfred.com/zbafrmrux?key=0f9582a98abb47d699f7ab0327de1b25";
+
+
+      setTimeout(() => {
+
+        window.location.href =
+          link;
+
+      }, 1200);
+
+    }
+
+  </script>
+
+</body>
+
+</html>
