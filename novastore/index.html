@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Curated product recommendations and independent buying insights.">
+<meta property="og:title" content="NOVA — Products Worth Your Money">
+<meta property="og:description" content="Thoughtfully selected products and original buying insights.">
+<title>NOVA — Products Worth Your Money</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg:#0a0a0a;--panel:#111111;--panel2:#151515;--text:#f5f5f2;
+  --muted:#9a9a9a;--line:rgba(255,255,255,.09);--accent:#ff5a5f;
+  --max:1180px;--radius:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.container{width:min(calc(100% - 40px),var(--max));margin:auto}
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:18px 0;transition:.3s}
+.nav.scrolled{background:rgba(10,10,10,.76);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;letter-spacing:-.05em;font-size:22px}
+.logo span{color:var(--accent)}
+.links{display:flex;gap:30px;color:#bbb;font-size:14px}
+.links a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 19px;border-radius:999px;border:1px solid transparent;font-weight:600;font-size:14px;cursor:pointer;transition:.25s}
+.btn-primary{background:#fff;color:#0a0a0a}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,255,255,.12)}
+.btn-dark{background:#171717;border-color:var(--line);color:#fff}
+.btn-dark:hover{background:#202020;transform:translateY(-2px)}
+.menu{display:none;background:none;border:0;color:white;font-size:25px}
+.hero{min-height:850px;display:flex;align-items:center;padding:150px 0 90px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr .9fr;gap:70px;align-items:center}
+.eyebrow{color:#aaa;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:700;margin-bottom:22px}
+h1{font-size:clamp(50px,7vw,88px);line-height:.98;letter-spacing:-.065em;max-width:760px}
+.hero-copy p{color:#aaa;max-width:570px;margin:28px 0;font-size:18px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.transparency{margin-top:25px;font-size:11px;color:#777}
+.visual{position:relative;min-height:520px;border:1px solid var(--line);border-radius:38px;background:radial-gradient(circle at 50% 20%,#292929 0,#171717 32%,#0e0e0e 70%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.visual:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,90,95,.13);filter:blur(70px)}
+.product-orb{width:62%;aspect-ratio:1;border-radius:32px;background:linear-gradient(145deg,#333,#111);border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 90px rgba(0,0,0,.7);transform:rotate(-7deg);position:relative;display:flex;align-items:center;justify-content:center}
+.product-orb:after{content:"NOVA PICK";font-size:13px;letter-spacing:.18em;color:#aaa;transform:rotate(7deg)}
+.floating{position:absolute;background:rgba(255,255,255,.07);border:1px solid var(--line);backdrop-filter:blur(15px);padding:13px 16px;border-radius:16px;font-size:12px;color:#ddd}
+.float1{top:12%;left:7%}.float2{right:7%;bottom:15%}
+.section{padding:110px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:45px}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#777;font-weight:700;margin-bottom:12px}
+h2{font-size:clamp(35px,5vw,58px);line-height:1.05;letter-spacing:-.055em}
+.section-head p{max-width:390px;color:#888}
+.featured{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+.featured-img{min-height:530px;background:radial-gradient(circle at center,#333,#111 65%);display:flex;align-items:center;justify-content:center}
+.featured-img .mock{width:55%;aspect-ratio:1;border-radius:25px;background:linear-gradient(145deg,#454545,#171717);box-shadow:0 35px 70px #000;transform:rotate(5deg)}
+.featured-info{padding:65px;display:flex;flex-direction:column;justify-content:center}
+.tag{display:inline-flex;width:max-content;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:#aaa;font-size:10px;letter-spacing:.14em;font-weight:700}
+.featured-info h3{font-size:38px;line-height:1.05;letter-spacing:-.045em;margin:18px 0}
+.featured-info p{color:#999;margin-bottom:25px}
+.points{display:grid;gap:12px;margin-bottom:30px}
+.point{display:flex;gap:10px;font-size:14px;color:#ccc}
+.point b{color:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{padding:32px;border:1px solid var(--line);border-radius:22px;background:var(--panel);transition:.3s}
+.card:hover{transform:translateY(-5px);background:#141414}
+.number{font-size:11px;color:#666;margin-bottom:55px}
+.card h3{font-size:20px;margin-bottom:10px}
+.card p{color:#888;font-size:14px}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.product{border:1px solid var(--line);border-radius:24px;background:var(--panel);overflow:hidden;transition:.3s}
+.product:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.16)}
+.product-image{height:250px;background:radial-gradient(circle,#292929,#101010);display:flex;align-items:center;justify-content:center}
+.product-shape{width:48%;height:52%;border-radius:20px;background:linear-gradient(145deg,#454545,#151515);box-shadow:0 25px 45px #000;transform:rotate(-6deg)}
+.product-body{padding:25px}
+.category{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.14em}
+.product h3{font-size:20px;margin:8px 0}
+.product-body p{color:#888;font-size:13px;min-height:42px;margin-bottom:20px}
+.editorial{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:start}
+.editorial-copy p{color:#999;margin-top:22px;max-width:500px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{padding:23px;border:1px solid var(--line);border-radius:18px;background:#101010}
+.check b{display:block;margin-bottom:6px}.check span{color:#888;font-size:13px}
+.cta{padding:95px 30px;text-align:center;border:1px solid var(--line);border-radius:35px;background:radial-gradient(circle at center,#191919,#0d0d0d 65%)}
+.cta h2{max-width:700px;margin:auto}.cta p{color:#888;max-width:520px;margin:20px auto 30px}
+footer{padding:55px 0 35px;border-top:1px solid var(--line);margin-top:100px}
+.footer-grid{display:flex;justify-content:space-between;gap:30px}.footer-copy{color:#777;font-size:12px;max-width:340px;margin-top:12px}
+.footer-links{display:flex;gap:22px;flex-wrap:wrap;color:#777;font-size:12px}.footer-links a:hover{color:#fff}
+.disclosure{margin-top:35px;padding-top:20px;border-top:1px solid var(--line);color:#666;font-size:11px}
+@media(max-width:800px){
+ .links,.nav .btn{display:none}.menu{display:block}.hero{min-height:auto;padding:135px 0 70px}
+ .hero-grid,.featured,.editorial{grid-template-columns:1fr;gap:35px}
+ .visual{min-height:390px}.section{padding:75px 0}.section-head{display:block}.section-head p{margin-top:18px}
+ .featured-img{min-height:340px}.featured-info{padding:35px}.featured-info h3{font-size:31px}
+ .cards,.products{grid-template-columns:1fr}.product-image{height:220px}
+ .checks{grid-template-columns:1fr}.footer-grid{display:block}.footer-links{margin-top:25px}
+}
+@media(max-width:450px){.container{width:min(calc(100% - 28px),var(--max))}h1{font-size:49px}.hero-copy p{font-size:16px}.visual{min-height:330px}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#">NOVA<span>.</span></a>
+    <div class="links">
+      <a href="#home">Home</a><a href="#featured">Featured</a><a href="#why">Why Us</a><a href="#about">About</a>
+    </div>
+    <a class="btn btn-primary" href="#picks">Explore Picks</a>
+    <button class="menu" aria-label="Open menu" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<main id="home">
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">Independent product discovery</div>
+      <h1>Discover Products Worth Your Money.</h1>
+      <p>Thoughtfully selected products, honest insights, and recommendations designed to help you buy with confidence.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#picks">Explore Our Picks →</a>
+        <a class="btn btn-dark" href="#featured">Editor's Pick</a>
+      </div>
+      <div class="transparency">As an Amazon Associate I earn from qualifying purchases.</div>
+    </div>
+    <div class="visual" aria-label="Premium product showcase">
+      <div class="floating float1">CURATED • INDEPENDENT</div>
+      <div class="product-orb"></div>
+      <div class="floating float2">QUALITY OVER NOISE</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="featured">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Featured</div><h2>One great pick.<br>Less searching.</h2></div>
+    <p>A focused recommendation with original editorial insight—not a copied marketplace listing.</p>
+  </div>
+  <div class="featured">
+    <div class="featured-img"><div class="mock"></div></div>
+    <div class="featured-info">
+      <span class="tag">EDITOR'S PICK</span>
+      <h3 id="featuredName">Premium Everyday Essential</h3>
+      <p id="featuredDesc">A placeholder recommendation built to demonstrate the landing page. Replace this with your own original product analysis.</p>
+      <div class="points">
+        <div class="point"><b>✓</b><span>Thoughtfully selected for everyday usefulness</span></div>
+        <div class="point"><b>✓</b><span>Clear strengths and considerations</span></div>
+        <div class="point"><b>✓</b><span>Simple path to the product page</span></div>
+      </div>
+      <a class="btn btn-primary" id="featuredLink" href="#" target="_blank" rel="nofollow sponsored noopener">View Product →</a>
+      <small style="color:#666;margin-top:12px">Affiliate link • You may be redirected to Amazon</small>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="why">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Our approach</div><h2>Less Searching.<br>Better Choices.</h2></div>
+  </div>
+  <div class="cards">
+    <article class="card"><div class="number">01</div><h3>Carefully Selected</h3><p>Products chosen around quality, usefulness, and overall value.</p></article>
+    <article class="card"><div class="number">02</div><h3>Independent Insights</h3><p>Original analysis designed to help you understand what you're buying.</p></article>
+    <article class="card"><div class="number">03</div><h3>Easy Shopping</h3><p>When you're ready, continue to the retailer through our affiliate link.</p></article>
+  </div>
+</div>
+</section>
+
+<section class="section" id="picks">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Curated collection</div><h2>Our Picks.</h2></div>
+    <p>Simple recommendations with room for your own judgment. No invented prices or ratings.</p>
+  </div>
+  <div class="products" id="productGrid"></div>
+</div>
+</section>
+
+<section class="section" id="about">
+<div class="container editorial">
+  <div>
+    <div class="kicker">Editorial</div>
+    <h2>Why These Products?</h2>
+  </div>
+  <div class="editorial-copy">
+    <p>Great recommendations should do more than repeat a product listing. Our goal is to explain what makes an item useful, who it fits, and what you should consider before buying.</p>
+    <div class="checks" style="margin-top:30px">
+      <div class="check"><b>✓ What we like</b><span>Highlight practical strengths using original observations.</span></div>
+      <div class="check"><b>✓ Who it's for</b><span>Explain the type of buyer who may benefit most.</span></div>
+      <div class="check"><b>✓ What to consider</b><span>Surface trade-offs instead of hiding them.</span></div>
+      <div class="check"><b>✓ Our verdict</b><span>Give a concise editorial conclusion.</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+  <div class="cta">
+    <div class="kicker">Start exploring</div>
+    <h2>Ready to Find Your Next Favorite?</h2>
+    <p>Explore carefully selected recommendations and make your next purchase with confidence.</p>
+    <a class="btn btn-primary" href="#picks">Explore Products →</a>
+  </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+  <div class="footer-grid">
+    <div><a class="logo" href="#">NOVA<span>.</span></a><div class="footer-copy">Independent product discovery and original buying insights.</div></div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#disclosure">Affiliate Disclosure</a>
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="disclosure" id="disclosure">As an Amazon Associate I earn from qualifying purchases.</div>
+  <div style="color:#555;font-size:11px;margin-top:12px">© <span id="year"></span> NOVA. All rights reserved.</div>
+</div>
+</footer>
+
+<script>
+// =====================================================
+// PRODUCT CONFIGURATION — EDIT ONLY THIS SECTION
+// =====================================================
+const products = [
+  {
+    name: "Premium Everyday Essential",
+    category: "Lifestyle",
+    description: "Replace this with your own original one-line product description.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  },
+  {
+    name: "Modern Desk Upgrade",
+    category: "Workspace",
+    description: "A clean placeholder for your original product recommendation.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  },
+  {
+    name: "Smart Tech Companion",
+    category: "Technology",
+    description: "Replace this text with useful, original editorial information.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  },
+  {
+    name: "Daily Carry Favorite",
+    category: "Accessories",
+    description: "Describe what makes this product useful and who it suits.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  },
+  {
+    name: "Home Comfort Pick",
+    category: "Home",
+    description: "Add your own analysis rather than copying marketplace text.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  },
+  {
+    name: "Fitness Essential",
+    category: "Fitness",
+    description: "Explain the practical value and relevant considerations.",
+    image: "YOUR_PRODUCT_IMAGE_URL",
+    affiliateUrl: "YOUR_AMAZON_ASSOCIATE_LINK"
+  }
+];
+
+const grid = document.getElementById("productGrid");
+
+products.forEach((product) => {
+  const safeLink = product.affiliateUrl && product.affiliateUrl !== "YOUR_AMAZON_ASSOCIATE_LINK";
+  const card = document.createElement("article");
+  card.className = "product";
+
+  const imageHTML = product.image && product.image !== "YOUR_PRODUCT_IMAGE_URL"
+    ? `<img src="${product.image}" alt="${escapeHTML(product.name)}" loading="lazy" style="max-width:72%;max-height:75%;object-fit:contain">`
+    : `<div class="product-shape" aria-hidden="true"></div>`;
+
+  card.innerHTML = `
+    <div class="product-image">${imageHTML}</div>
+    <div class="product-body">
+      <div class="category">${escapeHTML(product.category)}</div>
+      <h3>${escapeHTML(product.name)}</h3>
+      <p>${escapeHTML(product.description)}</p>
+      ${
+        safeLink
+        ? `<a class="btn btn-dark" href="${product.affiliateUrl}" target="_blank" rel="nofollow sponsored noopener">View Product →</a>`
+        : `<span class="btn btn-dark" style="opacity:.45;cursor:not-allowed">Add Affiliate Link</span>`
+      }
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[char]));
+}
+
+const featured = products[0];
+if(featured){
+  document.getElementById("featuredName").textContent = featured.name;
+  document.getElementById("featuredDesc").textContent = featured.description;
+  const link = document.getElementById("featuredLink");
+  if(featured.affiliateUrl && featured.affiliateUrl !== "YOUR_AMAZON_ASSOCIATE_LINK"){
+    link.href = featured.affiliateUrl;
+  }else{
+    link.removeAttribute("href");
+    link.style.opacity = ".45";
+    link.style.cursor = "not-allowed";
+  }
+}
+
+window.addEventListener("scroll",()=>{
+  document.getElementById("nav").classList.toggle("scrolled",window.scrollY>20);
+});
+
+function toggleMenu(){
+  const links=document.querySelector(".links");
+  const visible=links.style.display==="flex";
+  links.style.display=visible?"":"flex";
+  if(!visible){
+    links.style.position="absolute";links.style.top="70px";links.style.left="14px";links.style.right="14px";
+    links.style.padding="20px";links.style.border="1px solid var(--line)";links.style.borderRadius="20px";
+    links.style.background="rgba(15,15,15,.97)";links.style.flexDirection="column";
+  }
+}
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
