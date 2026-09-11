@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Queenland Player</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,59,92,.10),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            #090a0d 0%,
+            #050506 100%
+        );
+
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+/* =========================
+   PLAYER
+========================= */
+
+.video-container {
+    position: relative;
+
+    width: 100%;
+    max-width: 1000px;
+
+    margin: auto;
+
+    aspect-ratio: 16 / 9;
+
+    overflow: hidden;
+
+    background: #030304;
+
+    border-radius: 18px;
+
+    border: 1px solid
+        rgba(255,255,255,.09);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.65),
+
+        0 0 45px
+        rgba(255,59,92,.07);
+}
+
+/* =========================
+   MEGA
+========================= */
+
+.video-container iframe {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+
+    opacity: 0;
+
+    transform: scale(1.025);
+
+    transition:
+        opacity 1.1s ease,
+        transform 1.3s
+        cubic-bezier(.22,1,.36,1);
+}
+
+/* =========================
+   THUMBNAIL
+========================= */
+
+.thumbnail {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 5;
+
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.12),
+            rgba(0,0,0,.25) 40%,
+            rgba(0,0,0,.88) 100%
+        ),
+  url("../smp.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    transform: scale(1);
+
+    opacity: 1;
+
+    transition:
+        opacity 1s ease,
+        transform 1.5s
+        cubic-bezier(.22,1,.36,1);
+}
+
+/* Cinematic vignette */
+
+.thumbnail::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 35%,
+            rgba(0,0,0,.5) 100%
+        );
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.brand {
+    position: absolute;
+
+    top: 18px;
+    left: 18px;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(10,10,12,.55);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.25);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+/* LOGO DOT */
+
+.brand-icon {
+    position: relative;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #ff3b5c;
+
+    box-shadow:
+        0 0 12px
+        rgba(255,59,92,.8);
+
+    animation:
+        logoPulse 1.8s
+        ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+
+    0%,100% {
+        transform: scale(1);
+        opacity: .75;
+    }
+
+    50% {
+        transform: scale(1.35);
+        opacity: 1;
+    }
+}
+
+/* BRAND NAME */
+
+.brand-name {
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,.95);
+}
+
+/* HD BADGE */
+
+.quality {
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    padding: 3px 5px;
+
+    border-radius: 4px;
+
+    color: #fff;
+
+    background:
+        rgba(255,59,92,.18);
+
+    border:
+        1px solid
+        rgba(255,59,92,.35);
+}
+
+/* =========================
+   TOP LIGHT
+========================= */
+
+.top-line {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    z-index: 25;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #ff3b5c,
+            transparent
+        );
+
+    opacity: .8;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 15;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    pointer-events: none;
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+/* =========================
+   PREMIUM SPINNER
+========================= */
+
+.spinner {
+    position: relative;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid
+        rgba(255,255,255,.10);
+
+    border-top-color:
+        #ff3b5c;
+
+    animation:
+        spin 1s linear infinite;
+
+    box-shadow:
+        0 0 25px
+        rgba(255,59,92,.16);
+}
+
+.spinner::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 7px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,59,92,.20);
+
+    animation:
+        innerPulse 1.6s
+        ease-in-out infinite;
+}
+
+@keyframes spin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+@keyframes innerPulse {
+
+    0%,100% {
+        transform: scale(.82);
+        opacity: .25;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* =========================
+   LOADING TEXT
+========================= */
+
+.loading-text {
+    margin-top: 19px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.4px;
+
+    color:
+        rgba(255,255,255,.92);
+}
+
+.status {
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    letter-spacing: .5px;
+
+    color:
+        rgba(255,255,255,.42);
+}
+
+/* =========================
+   LOADED
+========================= */
+
+.loaded iframe {
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+.loaded .thumbnail {
+    opacity: 0;
+
+    transform: scale(1.07);
+
+    pointer-events: none;
+}
+
+.loaded .loading {
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+.loaded .brand {
+    opacity: 0;
+
+    transform:
+        translateY(-8px);
+
+    pointer-events: none;
+}
+
+/* =========================
+   DOWNLOAD AREA
+========================= */
+
+.download-area {
+    width: 100%;
+
+    max-width: 1000px;
+
+    margin:
+        18px auto 0;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+/* =========================
+   DOWNLOAD BUTTON
+========================= */
+
+.download-button {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 280px;
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 11px;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff3b5c,
+            #e52248
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius: 11px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(255,59,92,.16);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+}
+
+/* SHINE EFFECT */
+
+.download-button::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.18),
+            transparent
+        );
+
+    transform:
+        skewX(-20deg);
+
+    transition:
+        left .7s ease;
+}
+
+.download-button:hover::before {
+    left: 140%;
+}
+
+.download-button:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 15px 35px
+        rgba(255,59,92,.25);
+
+    filter:
+        brightness(1.08);
+}
+
+.download-button:active {
+    transform:
+        translateY(0);
+}
+
+/* DOWNLOAD ICON */
+
+.download-icon {
+    font-size: 17px;
+
+    line-height: 1;
+
+    transition:
+        transform .25s ease;
+}
+
+.download-button:hover
+.download-icon {
+    transform:
+        translateY(3px);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .video-container {
+        border-radius: 13px;
+    }
+
+    .brand {
+        top: 11px;
+        left: 11px;
+
+        padding: 7px 9px;
+
+        gap: 7px;
+    }
+
+    .brand-name {
+        font-size: 9px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .quality {
+        font-size: 7px;
+    }
+
+    .spinner {
+        width: 42px;
+        height: 42px;
+    }
+
+    .loading-text {
+        font-size: 10px;
+    }
+
+    .status {
+        font-size: 9px;
+    }
+
+    .download-button {
+        max-width: 100%;
+
+        min-height: 47px;
+    }
+}
+</style>
+    <script src="https://oatstuckalfred.com/f1/94/22/f194224216b2765db40c9ddd216d1661.js"></script>
+</head>
+
+<body>
+
+<!-- =========================
+     VIDEO PLAYER
+========================= -->
+
+<div class="video-container" id="player">
+
+    <div class="top-line"></div>
+
+    <!-- QUEENSLAND BRANDING -->
+
+    <div class="brand">
+
+        <span class="brand-icon"></span>
+
+        <span class="brand-name">
+            QUEENSLAND
+        </span>
+
+        <span class="quality">
+            HD
+        </span>
+
+    </div>
+
+
+    <!-- THUMBNAIL -->
+
+    <div class="thumbnail"></div>
+
+
+    <!-- LOADING -->
+
+    <div class="loading">
+
+        <div class="spinner"></div>
+
+        <div class="loading-text">
+            PREPARING VIDEO
+        </div>
+
+        <div class="status" id="status">
+            Connecting to player...
+        </div>
+
+    </div>
+
+
+    <!-- MEGA PLAYER -->
+
+    <iframe
+        id="megaPlayer"
+        src="https://mega.nz/embed/jrYm3BiZ#hKWLIbsoUuj4fR2X2eu8Fk1QGlOi_mEAvoWZuAiI1FI"
+        allowfullscreen>
+    </iframe>
+
+</div>
+
+
+<!-- =========================
+     DOWNLOAD BUTTON
+========================= -->
+
+<div class="download-area">
+
+    <a
+        class="download-button"
+        href="https://queenland.my.id/download_video/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+
+        <span>
+            DOWNLOAD
+        </span>
+
+        <span class="download-icon">
+            ↓
+        </span>
+
+    </a>
+
+</div>
+
+
+<script>
+
+const player =
+    document.getElementById("player");
+
+const iframe =
+    document.getElementById("megaPlayer");
+
+const status =
+    document.getElementById("status");
+
+let loaded = false;
+
+
+/* MEGA LOADED */
+
+iframe.addEventListener(
+    "load",
+    function() {
+
+        if (loaded) return;
+
+        loaded = true;
+
+        status.textContent =
+            "Player ready";
+
+        setTimeout(() => {
+
+            player.classList.add(
+                "loaded"
+            );
+
+        }, 600);
+
+    }
+);
+
+
+/* 5 SECOND STATUS */
+
+setTimeout(() => {
+
+    if (!loaded) {
+
+        status.textContent =
+            "Still preparing video...";
+
+    }
+
+}, 5000);
+
+
+/* 12 SECOND STATUS */
+
+setTimeout(() => {
+
+    if (!loaded) {
+
+        status.textContent =
+            "Video is taking a little longer...";
+
+    }
+
+}, 12000);
+
+</script>
+<script src="https://oatstuckalfred.com/42/44/e4/4244e4e91867a376bbdbf792e914a8c2.js"></script>
+</body>
+</html>
