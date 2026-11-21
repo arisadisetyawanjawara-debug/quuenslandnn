@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Krovan Bakery | Informasi Peserta</title>
+<style>
+:root{--ink:#202821;--muted:#70796f;--line:#e6e5df;--green:#263c30;--gold:#b99a62;--paper:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f3ef;color:var(--ink);font-family:Arial,Helvetica,sans-serif;padding:34px 16px}
+.sheet{max-width:850px;margin:auto;background:var(--paper);border:1px solid #e7e5dc;padding:38px 42px;box-shadow:0 8px 30px #1d2b2010}
+.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--green);padding-bottom:18px;gap:20px}
+.brand{font-family:Georgia,serif;font-size:24px;letter-spacing:2px;color:var(--green)}
+.brand small{display:block;font-family:Arial,sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:5px}
+.doc{font-size:9px;letter-spacing:1.5px;text-align:right;color:var(--muted);line-height:1.8}
+h1{font-family:Georgia,serif;font-size:27px;font-weight:500;margin:27px 0 5px}
+.subtitle{font-size:11px;color:var(--muted);letter-spacing:1px}
+.ref{margin-top:22px;display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:14px;font-size:11px}
+.ref b{font-weight:700}
+.section{margin-top:24px}
+.section h2{font-size:10px;letter-spacing:1.5px;color:var(--green);border-bottom:1px solid var(--line);padding-bottom:9px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;column-gap:35px}
+.item{padding:9px 0;border-bottom:1px solid #f0efeb;display:flex;justify-content:space-between;gap:12px;font-size:11px}
+.item span:first-child{color:var(--muted)}
+.item b{text-align:right;font-weight:600}
+.payment{margin-top:25px;border:1px solid var(--line)}
+.payment-title{background:#f5f5f0;padding:13px 16px;font-size:10px;letter-spacing:1.5px;font-weight:700;color:var(--green)}
+.payrow{display:flex;justify-content:space-between;gap:15px;padding:12px 16px;border-top:1px solid var(--line);font-size:12px}
+.payrow span{color:var(--muted)}
+.payrow strong{font-size:13px}
+.balance{background:#faf8f1}
+.balance strong{font-size:19px;color:#9b7539}
+.statusline{margin-top:18px;padding:15px 17px;border:1px solid #d8dfd8;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.statusline span{font-size:10px;letter-spacing:1.3px;color:var(--muted)}
+.status{font-size:11px;letter-spacing:1px;font-weight:800;padding:8px 12px;border-radius:2px}
+.status.unpaid{background:#f8e9e6;color:#9b4035}
+.status.partial{background:#f8f0df;color:#93691f}
+.status.paid{background:#e8f1e9;color:#326846}
+.note{font-size:10px;color:var(--muted);line-height:1.7;margin-top:17px}
+.foot{border-top:1px solid var(--line);margin-top:30px;padding-top:14px;display:flex;justify-content:space-between;gap:15px;font-size:9px;color:var(--muted)}
+.tools{max-width:850px;margin:0 auto 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tools input,.tools select,.tools button{padding:9px 11px;border:1px solid #d9d9d1;background:white;border-radius:4px;font-size:11px}
+.tools button{background:var(--green);color:white;cursor:pointer}
+@media(max-width:600px){body{padding:12px 8px}.sheet{padding:23px 18px}.brand{font-size:20px}h1{font-size:23px}.grid{grid-template-columns:1fr}.doc{font-size:8px}.ref{font-size:10px}.foot{flex-direction:column}.statusline{align-items:flex-start;flex-direction:column}}
+@media print{body{padding:0;background:#fff}.tools{display:none}.sheet{border:0;box-shadow:none;padding:20px 25px;max-width:none}.status{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="tools">
+ <div>
+  <select id="personSelect" aria-label="Pilih peserta"></select>
+ </div>
+ <button onclick="window.print()">Cetak / Simpan PDF</button>
+</div>
+<main class="sheet">
+ <header class="head">
+  <div class="brand">KROVAN BAKERY<small>INTERNATIONAL BAKERY PROGRAM</small></div>
+  <div class="doc">INFORMASI PESERTA<br>INDONESIA — JERMAN</div>
+ </header>
+ <h1>Informasi Peserta</h1>
+ <div class="subtitle">RINGKASAN DATA PROGRAM & STATUS PEMBAYARAN</div>
+ <div class="ref"><div>No. Registrasi: <b id="reg"></b></div><div>Tanggal dokumen: <b id="docDate"></b></div></div>
+
+ <section class="section">
+  <h2>01 / IDENTITAS PESERTA</h2>
+  <div class="grid" id="identity"></div>
+ </section>
+ <section class="section">
+  <h2>02 / INFORMASI PROGRAM</h2>
+  <div class="grid" id="program"></div>
+ </section>
+ <section class="section">
+  <h2>03 / RINCIAN PEMBAYARAN</h2>
+  <div class="payment">
+   <div class="payment-title">BIAYA PELATIHAN</div>
+   <div class="payrow"><span>Total biaya pelatihan</span><strong>Rp600.000</strong></div>
+   <div class="payrow"><span>Jumlah sudah dibayarkan</span><strong id="already">Rp0</strong></div>
+   <div class="payrow balance"><span>Sisa pembayaran / pelunasan</span><strong id="remaining">Rp600.000</strong></div>
+  </div>
+  <div class="statusline"><span>STATUS PEMBAYARAN</span><b id="status" class="status unpaid">BELUM LUNAS</b></div>
+  <p class="note">Mohon periksa rincian pembayaran di atas. Simpan lembar informasi ini sebagai catatan pribadi. Pembayaran dinyatakan diterima setelah diverifikasi oleh pihak penerima pembayaran yang berwenang.</p>
+ </section>
+ <footer class="foot"><span>KROVAN BAKERY</span><span>LEMBAR INFORMASI PESERTA</span></footer>
+</main>
+<script>
+const participants=[
+{name:"wahyudi nugroho",reg:"KB-DE-0079",gender:"Laki-laki",birth:"",age:"42 tahun",address:"perum griya kenari mas c2 no 21 rt 04 rw 11.kecamatan cileungsi kabupaten bogor",education:"D3 MI",position:"Bakery Production",paid:0},
+{name:"Budi Santoso",reg:"KB-DE-0002",gender:"Laki-laki",birth:"Jepara, 8 Februari 2002",age:"24 tahun",address:"Jepara, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:0},
+{name:"Rina Amelia",reg:"KB-DE-0003",gender:"Perempuan",birth:"Demak, 17 Juni 2005",age:"21 tahun",address:"Demak, Jawa Tengah",education:"SMA",position:"Bakery Assistant",paid:300000},
+{name:"Dimas Saputra",reg:"KB-DE-0004",gender:"Laki-laki",birth:"Pati, 23 Januari 2003",age:"23 tahun",address:"Pati, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:0},
+{name:"Siti Nurhaliza",reg:"KB-DE-0005",gender:"Perempuan",birth:"Semarang, 11 September 2004",age:"22 tahun",address:"Semarang, Jawa Tengah",education:"SMK",position:"Quality Control",paid:600000},
+{name:"Fajar Ramadhan",reg:"KB-DE-0006",gender:"Laki-laki",birth:"Rembang, 4 Maret 2001",age:"25 tahun",address:"Rembang, Jawa Tengah",education:"SMA",position:"Bakery Production",paid:0},
+{name:"Putri Maharani",reg:"KB-DE-0007",gender:"Perempuan",birth:"Purwodadi, 19 Juli 2006",age:"20 tahun",address:"Grobogan, Jawa Tengah",education:"SMK",position:"Bakery Assistant",paid:300000},
+{name:"Rizky Firmansyah",reg:"KB-DE-0008",gender:"Laki-laki",birth:"Kendal, 15 Mei 2002",age:"24 tahun",address:"Kendal, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Intan Permata",reg:"KB-DE-0009",gender:"Perempuan",birth:"Blora, 9 Agustus 2004",age:"22 tahun",address:"Blora, Jawa Tengah",education:"SMA",position:"Packaging",paid:0},
+{name:"Agus Setiawan",reg:"KB-DE-0010",gender:"Laki-laki",birth:"Tegal, 20 Februari 2000",age:"26 tahun",address:"Tegal, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Nadia Safitri",reg:"KB-DE-0011",gender:"Perempuan",birth:"Brebes, 13 November 2005",age:"21 tahun",address:"Brebes, Jawa Tengah",education:"SMA",position:"Bakery Assistant",paid:0},
+{name:"Arif Hidayat",reg:"KB-DE-0012",gender:"Laki-laki",birth:"Pekalongan, 6 Januari 2003",age:"23 tahun",address:"Pekalongan, Jawa Tengah",education:"SMK",position:"Quality Control",paid:600000},
+{name:"Dewi Anggraini",reg:"KB-DE-0013",gender:"Perempuan",birth:"Batang, 25 April 2004",age:"22 tahun",address:"Batang, Jawa Tengah",education:"SMA",position:"Packaging",paid:0},
+{name:"Yoga Prakoso",reg:"KB-DE-0014",gender:"Laki-laki",birth:"Surakarta, 14 Februari 2001",age:"25 tahun",address:"Surakarta, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Vina Oktaviani",reg:"KB-DE-0015",gender:"Perempuan",birth:"Salatiga, 7 Oktober 2005",age:"21 tahun",address:"Salatiga, Jawa Tengah",education:"SMA",position:"Bakery Assistant",paid:0},
+{name:"Rendi Kurniawan",reg:"KB-DE-0016",gender:"Laki-laki",birth:"Magelang, 18 Maret 2002",age:"24 tahun",address:"Magelang, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Anisa Rahmawati",reg:"KB-DE-0017",gender:"Perempuan",birth:"Temanggung, 22 Juni 2004",age:"22 tahun",address:"Temanggung, Jawa Tengah",education:"SMA",position:"Packaging",paid:0},
+{name:"Galih Wicaksono",reg:"KB-DE-0018",gender:"Laki-laki",birth:"Wonosobo, 10 Januari 2003",age:"23 tahun",address:"Wonosobo, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Maya Lestari",reg:"KB-DE-0019",gender:"Perempuan",birth:"Purworejo, 16 Agustus 2006",age:"20 tahun",address:"Purworejo, Jawa Tengah",education:"SMA",position:"Bakery Assistant",paid:0},
+{name:"Ilham Maulana",reg:"KB-DE-0020",gender:"Laki-laki",birth:"Kebumen, 3 Mei 2000",age:"26 tahun",address:"Kebumen, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Elsa Puspita",reg:"KB-DE-0021",gender:"Perempuan",birth:"Cilacap, 21 September 2004",age:"22 tahun",address:"Cilacap, Jawa Tengah",education:"SMA",position:"Quality Control",paid:0},
+{name:"Bagas Pratama",reg:"KB-DE-0022",gender:"Laki-laki",birth:"Purwokerto, 12 Desember 2002",age:"24 tahun",address:"Banyumas, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Fitri Handayani",reg:"KB-DE-0023",gender:"Perempuan",birth:"Purbalingga, 5 Juli 2005",age:"21 tahun",address:"Purbalingga, Jawa Tengah",education:"SMA",position:"Packaging",paid:0},
+{name:"Raka Aditya",reg:"KB-DE-0024",gender:"Laki-laki",birth:"Banjarnegara, 9 Februari 2003",age:"23 tahun",address:"Banjarnegara, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Nur Aisyah",reg:"KB-DE-0025",gender:"Perempuan",birth:"Sragen, 28 April 2004",age:"22 tahun",address:"Sragen, Jawa Tengah",education:"SMA",position:"Bakery Assistant",paid:0},
+{name:"Joko Susilo",reg:"KB-DE-0026",gender:"Laki-laki",birth:"Boyolali, 14 Januari 1999",age:"27 tahun",address:"Boyolali, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:600000},
+{name:"Melati Sari",reg:"KB-DE-0027",gender:"Perempuan",birth:"Klaten, 30 Juni 2006",age:"20 tahun",address:"Klaten, Jawa Tengah",education:"SMA",position:"Packaging",paid:0},
+{name:"Farhan Akbar",reg:"KB-DE-0028",gender:"Laki-laki",birth:"Wonogiri, 17 Maret 2002",age:"24 tahun",address:"Wonogiri, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:0},
+{name:"Sarah Aprilia",reg:"KB-DE-0029",gender:"Perempuan",birth:"Karanganyar, 8 Agustus 2004",age:"22 tahun",address:"Karanganyar, Jawa Tengah",education:"SMA",position:"Quality Control",paid:0},
+{name:"Kevin Setiawan",reg:"KB-DE-0030",gender:"Laki-laki",birth:"Sukoharjo, 26 Februari 2001",age:"25 tahun",address:"Sukoharjo, Jawa Tengah",education:"SMK",position:"Bakery Production",paid:0}
+];
+const fmt=n=>"Rp"+n.toLocaleString("id-ID");
+const fields=(arr)=>arr.map(([k,v])=>`<div class="item"><span>${k}</span><b>${v}</b></div>`).join("");
+function show(i){
+ const p=participants[i];document.getElementById("reg").textContent=p.reg;
+ document.getElementById("docDate").textContent=new Date().toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"});
+ document.getElementById("identity").innerHTML=fields([["Nama lengkap",p.name],["Jenis kelamin",p.gender],["Tempat, tanggal lahir",p.birth],["Umur",p.age],["Alamat",p.address],["Pendidikan terakhir",p.education]]);
+ document.getElementById("program").innerHTML=fields([["Program", "Indonesia – Jerman"],["Bidang pekerjaan",p.position],["Perusahaan / brand", "Krovan Bakery"],["Negara tujuan","Jerman"]]);
+ const remain=Math.max(0,600000-p.paid);
+ document.getElementById("already").textContent=fmt(p.paid);
+ document.getElementById("remaining").textContent=fmt(remain);
+ const s=document.getElementById("status");
+ s.className="status "+(remain===0?"paid":p.paid>0?"partial":"unpaid");
+ s.textContent=remain===0?"LUNAS":p.paid>0?"BELUM LUNAS — CICILAN":"BELUM LUNAS";
+}
+const sel=document.getElementById("personSelect");
+participants.forEach((p,i)=>{const o=document.createElement("option");o.value=i;o.textContent=p.reg+" — "+p.name;sel.appendChild(o)});
+sel.addEventListener("change",()=>show(Number(sel.value)));
+show(0);
+</script>
+</body>
+</html>
